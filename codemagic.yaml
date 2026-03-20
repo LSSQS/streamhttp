@@ -3,11 +3,28 @@ workflows:
     name: Build iOS
     instance_type: mac_mini_m1
     environment:
-      flutter: 3.10.6
+      flutter: 3.13.0
       xcode: 14.3
     scripts:
-      - flutter pub get
-      - cd ios && pod install && cd ..
-      - flutter build ios --release --no-codesign
+      - name: Get dependencies
+        script: flutter pub get
+
+      # 🔥 强制修复 flutter_js 内部 FFI 空安全编译错误
+      - name: Patch flutter_js to fix Dart3 FFI errors
+        script: |
+          set -e
+          PKG_DIR="$PUB_CACHE/hosted/pub.dev/flutter_js-0.8.0"
+
+          # 1) quickjs_runtime.dart 第73/78行: 移除返回值可空
+          sed -i 's/Pointer<JSValueConst>? Function/Pointer<JSValueConst> Function/g' \
+            $PKG_DIR/lib/quickjs/quickjs_runtime.dart
+
+          # 2) ffi.dart 第210行: 移除返回值可空
+          sed -i 's/Pointer<JSValue>? Function/Pointer<JSValue> Function/g' \
+            $PKG_DIR/lib/quickjs/ffi.dart
+
+      - name: Build iOS
+        script: flutter build ios --release --no-codesign
+
     artifacts:
       - build/ios/iphoneos/Runner.app
