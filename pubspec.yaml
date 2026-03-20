@@ -37,14 +37,13 @@ dependencies:
   brotli: ^0.6.0
   file_selector: ^1.0.2
 
-  # 降级稳定版，无编译错误
-  flutter_js: ^0.7.0
+  flutter_js: ^0.8.0
+  http: ^0.13.5       # 这里是关键，解决冲突
 
   flutter_code_editor:
   file_picker: ^8.0.0
   flutter_desktop_context_menu: ^0.2.0
   win32audio: ^1.3.1
-  http: ^1.2.1
   provider: ^6.1.2
 
   image_picker: ^1.1.0
