@@ -4,8 +4,8 @@ workflows:
     instance_type: mac_mini_m1
     max_build_duration: 60
     environment:
-      flutter: stable
-      xcode: latest
+      flutter: 3.13.0  # 👈 这里固定旧版，解决 flutter_js 崩溃
+      xcode: 15.0
       cocoapods: default
     scripts:
       - name: Install Flutter dependencies
