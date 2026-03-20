@@ -209,7 +209,7 @@ async function onResponse(context, request, response) {
     };
   }
 
-  /// -运行脚本
+  /// -运行脚本 (支持 onRequest + $request/$done 双兼容)
   Future<HttpRequest?> runScript(HttpRequest request) async {
     if (!enabled) {
       return request;
@@ -220,21 +220,38 @@ async function onResponse(context, request, response) {
         var context = jsonEncode(scriptContext(item));
         var jsRequest = jsonEncode(convertJsRequest(request));
         String script = await getScript(item);
-        var jsResult = await flutterJs.evaluateAsync(
-            """var request = $jsRequest, context = $context;  request['scriptContext'] = context; $script\n  onRequest(context, request)""");
+
+        String inject = """
+          (function() {
+            var $request = $jsRequest;
+            var context = $context;
+            var $done = (res) => res;
+            var _result = null;
+
+            try {
+              $script;
+            } catch(e) {}
+
+            if (typeof onRequest === 'function') {
+              return onRequest(context, $request);
+            }
+            return _result || $request;
+          })();
+        """;
+
+        var jsResult = await flutterJs.evaluateAsync(inject);
         var result = await jsResultResolve(jsResult);
-        if (result == null) {
-          return null;
-        }
+        if (result == null) return null;
+
         request.attributes['scriptContext'] = result['scriptContext'];
-        scriptSession = result['scriptContext']['session'] ?? {};
+        scriptSession = result['scriptContext']?['session'] ?? {};
         return convertHttpRequest(request, result);
       }
     }
     return request;
   }
 
-  /// -运行脚本
+  /// -运行脚本 (支持 onResponse + $request/$response/$done 双兼容)
   Future<HttpResponse?> runResponseScript(HttpResponse response) async {
     if (!enabled || response.request == null) {
       return response;
@@ -248,15 +265,31 @@ async function onResponse(context, request, response) {
         var jsRequest = jsonEncode(convertJsRequest(request));
         var jsResponse = jsonEncode(convertJsResponse(response));
         String script = await getScript(item);
-        var jsResult = await flutterJs.evaluateAsync(
-            """var response = $jsResponse, context = $context;  response['scriptContext'] = context; $script
-            \n  onResponse(context, $jsRequest, response);""");
-        // print("response: ${jsResult.isPromise} ${jsResult.isError} ${jsResult.rawResult}");
+
+        String inject = """
+          (function() {
+            var $request = $jsRequest;
+            var $response = $jsResponse;
+            var context = $context;
+            var _result = null;
+            var $done = (res) => { _result = res; };
+
+            try {
+              $script;
+            } catch(e) {}
+
+            if (typeof onResponse === 'function') {
+              return onResponse(context, $request, $response);
+            }
+            return _result || $response;
+          })();
+        """;
+
+        var jsResult = await flutterJs.evaluateAsync(inject);
         var result = await jsResultResolve(jsResult);
-        if (result == null) {
-          return null;
-        }
-        scriptSession = result['scriptContext']['session'] ?? {};
+        if (result == null) return null;
+
+        scriptSession = result['scriptContext']?['session'] ?? {};
         return convertHttpResponse(response, result);
       }
     }
@@ -297,7 +330,11 @@ async function onResponse(context, request, response) {
 
   //转换js response
   Map<String, dynamic> convertJsResponse(HttpResponse response) {
-    return {'headers': response.headers.toMap(), 'statusCode': response.status.code, 'body': response.bodyAsString};
+    return {
+      'headers': response.headers.toMap(),
+      'statusCode': response.status.code,
+      'body': response.bodyAsString
+    };
   }
 
   //http request
