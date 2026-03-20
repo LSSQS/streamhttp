@@ -37,11 +37,8 @@ dependencies:
   brotli: ^0.6.0
   file_selector: ^1.0.2
 
-  # 这里修复了 flutter_js 编译错误
-  flutter_js:
-    git:
-      url: https://github.com/abner/flutter_js.git
-      ref: fix-dart-ffi-nullptr
+  # 降级稳定版，无编译错误
+  flutter_js: ^0.7.0
 
   flutter_code_editor:
   file_picker: ^8.0.0
