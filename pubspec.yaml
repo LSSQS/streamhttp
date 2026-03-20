@@ -13,16 +13,17 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: any
+
   crypto: ^3.0.3
   cupertino_icons: ^1.0.2
   basic_utils: ^5.7.0
   logger: ^2.0.1
   date_format: ^2.0.7
   window_manager: ^0.3.8
-  
-  # 👇 这里换成官方 pub 依赖，解决 Gitee 权限失败
+
+  # 修复Gitee权限失败，用官方版本，功能一样
   desktop_multi_window: ^0.2.0
-  
+
   path_provider: ^2.1.2
   url_launcher: ^6.2.4
   proxy_manager: ^0.0.3
@@ -34,7 +35,10 @@ dependencies:
   share_plus: ^8.0.2
   brotli: ^0.6.0
   file_selector: ^1.0.2
+
+  # 🔥 修复iOS编译错误的稳定版，JS功能完全保留
   flutter_js: ^0.8.0
+
   flutter_code_editor:
   file_picker: ^8.0.0
   flutter_desktop_context_menu: ^0.2.0
