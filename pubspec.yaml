@@ -37,8 +37,9 @@ dependencies:
   brotli: ^0.6.0
   file_selector: ^1.0.2
 
+  # 这里用官方稳定版 + 强制依赖覆盖
   flutter_js: ^0.8.0
-  http: ^0.13.5       # 这里是关键，解决冲突
+  http: ^1.2.1
 
   flutter_code_editor:
   file_picker: ^8.0.0
@@ -53,6 +54,10 @@ dependencies:
   curved_navigation_bar: ^1.0.3
   bubble_bottom_bar: ^2.0.0
   web_socket_channel: ^2.3.0
+
+# 强制覆盖 http 版本，彻底解决冲突
+dependency_overrides:
+  http: ^1.2.1
 
 dev_dependencies:
   flutter_test:
