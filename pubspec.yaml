@@ -1,6 +1,6 @@
 name: network_proxy
 description: Network proxy
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: 'none'
 
 version: 1.2.0+1
 
@@ -13,29 +13,36 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: any
+
   crypto: ^3.0.3
   cupertino_icons: ^1.0.2
   basic_utils: ^5.7.0
   logger: ^2.0.1
   date_format: ^2.0.7
   window_manager: ^0.3.8
-  # 替换为公开 GitHub 依赖，解决 Gitee 权限问题
+
   desktop_multi_window:
     git:
       url: https://github.com/MixinNetwork/flutter-plugins.git
       path: packages/desktop_multi_window
+
   path_provider: ^2.1.2
   url_launcher: ^6.2.4
   proxy_manager: ^0.0.3
   qr_flutter: ^4.1.0
   easy_permission: ^1.0.0
-  qrscan: ^0.3.3
   flutter_barcode_scanner: ^2.0.0
   flutter_toastr: ^1.0.3
   share_plus: ^8.0.2
   brotli: ^0.6.0
   file_selector: ^1.0.2
-  flutter_js: ^0.8.0
+
+  # 这里修复了 flutter_js 编译错误
+  flutter_js:
+    git:
+      url: https://github.com/abner/flutter_js.git
+      ref: fix-dart-ffi-nullptr
+
   flutter_code_editor:
   file_picker: ^8.0.0
   flutter_desktop_context_menu: ^0.2.0
@@ -44,8 +51,6 @@ dependencies:
   provider: ^6.1.2
 
   image_picker: ^1.1.0
-#  google_places_picker: ^3.0.2
-
   crypton: ^2.2.1
   sizer: ^2.0.15
 
@@ -65,14 +70,3 @@ flutter:
     - assets/certs/ca.crt
     - assets/certs/ca_private.der
     - assets/icon.png
-    - assets/images/camera/
-    - assets/images/chat/
-    - assets/images/feed/
-    - assets/images/media/
-    - assets/images/navigation/
-    - assets/images/profile/
-    - assets/images/shopping/
-    - assets/images/signup/
-    - assets/images/statistics/
-    - assets/images/walkthrough/
-    - assets/images/main/
