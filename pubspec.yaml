@@ -33,11 +33,8 @@ dependencies:
   brotli: ^0.6.0
   file_selector: ^1.0.2
 
-  # 🔥 这里换成修复 Dart3 编译错误的版本，其余全不动
-  flutter_js:
-    git:
-      url: https://github.com/abner360/flutter_js.git
-      ref: fix-dart3-ffi
+  # 用这个兼容 Dart3 的版本，官方可访问
+  flutter_js: ^0.8.8
 
   flutter_code_editor:
   file_picker: ^8.0.0
