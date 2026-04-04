@@ -9,6 +9,9 @@ workflows:
       - name: Get dependencies
         script: flutter pub get
 
+      - name: Generate localization files   # ✅ 新增：生成本地化代码
+        script: flutter gen-l10n
+
       # 🔥 强制修复 flutter_js 内部 FFI 空安全编译错误
       - name: Patch flutter_js to fix Dart3 FFI errors
         script: |
