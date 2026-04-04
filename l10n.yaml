@@ -1,6 +1,7 @@
 arb-dir: lib/l10n
 template-arb-file: app_en.arb
 output-localization-file: app_localizations.dart
-output-class: AppLocalizations          # 必须明确指定类名
-synthetic-package: true                 # 使用默认的 package:flutter_gen/gen_l10n/
+output-class: AppLocalizations
+synthetic-package: false   # 🔥 关键修改，必须为 false
+output-dir: lib/generated  # 📁 新增：将生成文件放到这个目录
 untranslated-messages-file: l10n_errors.txt
