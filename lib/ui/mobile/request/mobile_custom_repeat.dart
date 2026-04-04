@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:network_proxy/generated/app_localizations.dart'; // ✅ 修改：使用项目内生成的本地化类
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 /// -高级重放
 /// - @author wang
