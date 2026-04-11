@@ -8,13 +8,13 @@ workflows:
       xcode: 15.4
       cocoapods: 1.15.2
       vars:
-        BUNDLE_ID: "com.yourcompany.yourapp" # 替换成你的 Bundle ID
+        BUNDLE_ID: "com.yourcompany.yourapp"
     scripts:
       - name: Get dependencies
         script: |
           flutter pub get
 
-      - name: Manually generate l10n (fix AppLocalizations error)
+      - name: Generate l10n
         script: |
           flutter gen-l10n --arb-dir=lib/l10n --template-arb-file=app_en.arb --output-localization-file=app_localizations.dart
 
