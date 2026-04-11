@@ -19,10 +19,10 @@ dependencies:
   logger: ^2.0.1
   date_format: ^2.0.7
   window_manager: ^0.3.8
-  desktop_multi_window:
-    git:
-      url: https://gitee.com/wanghongenpin/flutter-plugins.git
-      path: packages/desktop_multi_window
+  
+  # 👇 已替换为官方 pub 库（解决 Git 拉取失败）
+  desktop_multi_window: ^0.2.0
+  
   path_provider: ^2.1.2
   url_launcher: ^6.2.4
   proxy_manager: ^0.0.3
