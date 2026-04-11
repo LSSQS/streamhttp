@@ -13,16 +13,18 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: any
+  flutter_gen: any  # 👈 加上这个，彻底解决 flutter_gen 找不到
+
   crypto: ^3.0.3
   cupertino_icons: ^1.0.2
   basic_utils: ^5.7.0
   logger: ^2.0.1
   date_format: ^2.0.7
   window_manager: ^0.3.8
-  
-  # 👇 已替换为官方 pub 库（解决 Git 拉取失败）
+
+  # 👈 替换为官方 pub，不再拉 Git，解决克隆失败
   desktop_multi_window: ^0.2.0
-  
+
   path_provider: ^2.1.2
   url_launcher: ^6.2.4
   proxy_manager: ^0.0.3
@@ -53,13 +55,10 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^3.0.1
 
-dependency_overrides:
-  win32: ^5.8.0
-
 flutter:
   generate: true
   uses-material-design: true
-
+  
   assets:
     - assets/certs/ca.crt
     - assets/certs/ca_private.der
