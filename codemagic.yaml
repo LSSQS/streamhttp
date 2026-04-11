@@ -7,26 +7,21 @@ workflows:
       flutter: 3.24.0
       xcode: 15.4
       cocoapods: 1.15.2
-      vars:
-        BUNDLE_ID: "com.yourcompany.yourapp"
     scripts:
       - name: Get dependencies
-        script: |
-          flutter pub get
+        script: flutter pub get
 
       - name: Generate l10n
-        script: |
-          flutter gen-l10n --arb-dir=lib/l10n --template-arb-file=app_en.arb --output-localization-file=app_localizations.dart
+        script: flutter gen-l10n
 
-      - name: Install iOS pods
+      - name: Install pods
         script: |
           cd ios
           pod install --repo-update
           cd ..
 
       - name: Build iOS
-        script: |
-          flutter build ios --release --no-codesign
+        script: flutter build ios --release --no-codesign
 
     artifacts:
       - build/ios/ipa/*.ipa
