@@ -1,6 +1,6 @@
 workflows:
   ios-build:
-    name: Build iOS IPA
+    name: Build iOS
     instance_type: mac_mini_m1
     max_build_duration: 60
     environment:
@@ -8,9 +8,10 @@ workflows:
       xcode: 15.4
       cocoapods: 1.15.2
     scripts:
-      - name: Get dependencies
+      - name: Pub get
         script: flutter pub get
 
+      # 👇 强制生成国际化，解决 AppLocalizations 不存在
       - name: Generate l10n
         script: flutter gen-l10n
 
