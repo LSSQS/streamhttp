@@ -1,61 +1,32 @@
-# 定义工作流
 workflows:
-  ios_release_build:
-    name: iOS Release Build
-    # iOS构建必须用macOS实例，M1芯片的Mac Mini速度最快
+  ios-build:
+    name: Build iOS IPA
     instance_type: mac_mini_m1
-    max_build_duration: 60 # 最长构建时间（分钟）
+    max_build_duration: 60
     environment:
-      # 配置Flutter和Xcode版本，必须和你的项目兼容
-      flutter: 3.24.0 # 改成你项目用的Flutter版本（执行flutter --version查看）
+      flutter: 3.24.0
       xcode: 15.4
       cocoapods: 1.15.2
-      # 项目基础变量，按需修改
       vars:
-        XCODE_WORKSPACE: "ios/Runner.xcworkspace" # Xcode工作空间路径
-        XCODE_SCHEME: "Runner" # 构建Scheme，默认是Runner
-        BUNDLE_ID: "com.yourcompany.yourapp" # 替换成你的App唯一标识（Bundle ID）
-      # 签名配置（核心！Codemagic会自动管理证书和描述文件）
-      ios_signing:
-        distribution_type: app_store # 可选：app_store/development/ad_hoc/enterprise
-        bundle_identifier: $(BUNDLE_ID)
-    # 构建步骤脚本
+        BUNDLE_ID: "com.yourcompany.yourapp"  # 👈 这里改成你自己的 Bundle ID
     scripts:
-      - name: 1. 拉取Flutter依赖
+      - name: Flutter pub get
         script: |
-          flutter --version
           flutter pub get
-      - name: 2. 安装iOS Pod依赖
+
+      - name: Generate l10n 国际化（修复 AppLocalizations 报错）
+        script: |
+          flutter gen-l10n
+
+      - name: Install iOS pods
         script: |
           cd ios
-          pod repo update # 更新Pod仓库，解决依赖找不到的问题
-          pod install --verbose
+          pod install --repo-update
           cd ..
-      - name: 3. 构建iOS Release包（不签名，后续统一处理）
+
+      - name: Build iOS
         script: |
           flutter build ios --release --no-codesign
-      - name: 4. Xcode归档并导出IPA
-        script: |
-          cd ios
-          # 归档应用
-          xcodebuild archive \
-            -workspace $XCODE_WORKSPACE \
-            -scheme $XCODE_SCHEME \
-            -configuration Release \
-            -archivePath build/Runner.xcarchive \
-            CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
-          # 导出IPA文件
-          xcodebuild -exportArchive \
-            -archivePath build/Runner.xcarchive \
-            -exportOptionsPlist ExportOptions.plist \
-            -exportPath build/ \
-            -allowProvisioningUpdates
-    # 定义构建产物，Codemagic会自动收集这些文件
+
     artifacts:
-      - ios/build/*.ipa # 生成的iOS安装包路径
-    # 可选：构建完成后自动发布到TestFlight
-    publishing:
-      app_store_connect:
-        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
-        key_id: $APP_STORE_CONNECT_KEY_ID
-        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+      - build/ios/ipa/*.ipa
