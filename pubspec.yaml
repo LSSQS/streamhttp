@@ -59,13 +59,6 @@ dependency_overrides:
 flutter:
   generate: true
   uses-material-design: true
-  
-  # 👇 重点：l10n 配置必须与 flutter 同级，且缩进准确
-  l10n:
-    arb-dir: lib/l10n
-    template-arb-file: app_en.arb
-    output-localization-file: app_localizations.dart
-    output-class: AppLocalizations
 
   assets:
     - assets/certs/ca.crt
