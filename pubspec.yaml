@@ -10,6 +10,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: any
 
   crypto: ^3.0.3
   cupertino_icons: ^1.0.2
@@ -17,7 +20,7 @@ dependencies:
   logger: ^2.0.1
   date_format: ^2.0.7
 
-  # iOS 不需要这些电脑端插件，全部注释
+  # iOS 用不到，全部注释
   # window_manager: ^0.3.8
   # desktop_multi_window:
   #   git:
@@ -54,13 +57,11 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^3.0.1
 
-# 修复 win32 报错
 dependency_overrides:
   win32: ^5.8.0
 
 flutter:
-  # 关闭国际化生成
-  generate: false
+  generate: true  # 必须开，不然直接报错
   uses-material-design: true
   
   assets:
