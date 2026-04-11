@@ -53,13 +53,20 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^3.0.1
 
-# 🔥 强制升级 win32 版本，解决 UnmodifiableUint8ListView 错误
 dependency_overrides:
   win32: ^5.8.0
 
 flutter:
   generate: true
   uses-material-design: true
+
+  # 国际化配置（修复 AppLocalizations 报错）
+  l10n:
+    arb-dir: lib/l10n
+    template-arb-file: app_en.arb
+    output-localization-file: app_localizations.dart
+    output-class: AppLocalizations
+
   assets:
     - assets/certs/ca.crt
     - assets/certs/ca_private.der
