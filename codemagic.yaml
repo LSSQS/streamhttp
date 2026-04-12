@@ -1,27 +1,19 @@
 workflows:
-  build-ios:
-    name: Build iOS IPA
+  build-ios-ipa:
+    name: streamhttp iOS IPA Build
     max_build_duration: 120
-    instance_type: mac_mini_m1
     environment:
       flutter: 3.16.9
       xcode: latest
       cocoapods: default
     scripts:
-      - name: Get dependencies
-        script: flutter pub get
-
-      - name: 生成国际化文件（让它闭嘴）
-        script: flutter gen-l10n
-
-      - name: Install pods
+      - name: Execute build_ios.sh and build IPA
         script: |
-          cd ios
-          pod install --repo-update
-          cd ..
-
-      - name: 打包 IPA
-        script: flutter build ios --release --no-codesign
-
+          #!/bin/bash
+          set -e
+          export TERM=xterm-256color
+          chmod +x build_ios.sh
+          ./build_ios.sh
     artifacts:
-      - build/ios/ipa/*.ipa
+      # 直接收集生成的 IPA 文件
+      - /tmp/build_output/*.ipa
